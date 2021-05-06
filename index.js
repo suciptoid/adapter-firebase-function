@@ -35,7 +35,8 @@ export default function () {
 				entryPoints: ['.svelte-kit/firebase-function/index.js'],
 				outfile: join(dirs.function, 'index.js'),
 				bundle: true,
-				platform: 'node'
+				platform: 'node',
+				legalComments: 'none'
 			});
 
 			writeFileSync(join(dirs.function, 'package.json'), JSON.stringify({ main: 'index.js' }));
