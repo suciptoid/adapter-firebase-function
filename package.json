@@ -1,24 +1,29 @@
 {
   "name": "adapter-firebase-function",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "SvelteKit firebase-function adapter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },	
-  "exports": {
-		"import": "./index.js"
-	},
-  "keywords": [],
-  "author": {
-    "name": "Sucipto",
-    "email": "sucipto@pm.me",
-    "url": "https://sucipto.id"
   },
-  "license": "ISC",
+  "exports": {
+    "import": "./index.js"
+  },
+  "keywords": [],
+  "author": "Sucipto <sucipto@pm.me> (https://sucipto.id)",
+  "license": "MIT",
   "dependencies": {
     "@sveltejs/kit": "^1.0.0-next.100",
     "esbuild": "^0.11.18"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suciptoid/adapter-firebase-function.git"
+  },
+  "bugs": {
+    "url": "https://github.com/suciptoid/adapter-firebase-function/issues"
+  },
+  "homepage": "https://github.com/suciptoid/adapter-firebase-function#readme"
 }
