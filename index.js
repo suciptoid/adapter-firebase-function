@@ -1,22 +1,25 @@
-import { writeFileSync } from 'fs';
+import { writeFileSync, existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import esbuild from 'esbuild';
 import { execSync } from 'child_process';
 
-export default function () {
+export default function ({ minify = false } = {}) {
 	const adapter = {
 		name: 'adapter-firebase-function',
 
 		async adapt(utils) {
-			const dir = '.firebase';
-			utils.rimraf(dir);
-
 			const files = fileURLToPath(new URL('./files', import.meta.url));
+			if (!existsSync('firebase.json')) {
+				utils.copy(join(files, '_firebase.json'), 'firebase.json');
+				utils.log.success('Auto generated firebase.json')
+			}
+
+			const { hosting, functions } = read_config()
 
 			const dirs = {
-				hosting: join(dir, 'hosting'),
-				function: join(dir, 'function')
+				hosting: hosting.public,
+				functions: functions.source
 			};
 
 			// TODO ideally we'd have something like utils.tmpdir('vercel')
@@ -25,22 +28,32 @@ export default function () {
 			// would be controlled. at the moment we're exposing
 			// implementation details that could change
 			utils.log.minor('Generating serverless function...');
-			utils.copy(`${files}/_package.json`, '.svelte-kit/firebase-function/package.json');
 			utils.copy(join(files, 'index.js'), '.svelte-kit/firebase-function/index.js');
 
-			const stdout = execSync('npm install', { cwd: '.svelte-kit/firebase-function' });
-			utils.log.info(stdout.toString());
-
+			const outfile = join(dirs.functions, 'ssr.js') 
+			utils.rimraf(outfile)
 			await esbuild.build({
 				entryPoints: ['.svelte-kit/firebase-function/index.js'],
-				outfile: join(dirs.function, 'index.js'),
+				outfile,
 				bundle: true,
 				platform: 'node',
-				legalComments: 'none'
+				target:['node12'],
+				legalComments: 'none',
+				minify
 			});
 
-			writeFileSync(join(dirs.function, 'package.json'), JSON.stringify({ main: 'index.js' }));
+			if (!existsSync(join(dirs.functions, 'index.js'))) {
+				utils.log.minor('Generated required functions index.js file if doesn\'t exists')
+				utils.copy(join(files, '_index.js'), join(dirs.functions, 'index.js'));
+			}
 
+			if (!existsSync(join(dirs.functions, 'package.json'))) {
+				utils.log.minor('Generated required package.json file if doesn\'t exists')
+				utils.copy(join(files, '_package.json'), join(dirs.functions, 'package.json'));
+				utils.log.success('You need to run npm install on your function directory')
+			}
+
+			utils.rimraf(dirs.hosting)
 			utils.log.minor('Prerendering static pages...');
 			await utils.prerender({
 				dest: dirs.hosting
@@ -54,4 +67,20 @@ export default function () {
 	};
 
 	return adapter;
+}
+
+function read_config() {
+	if (existsSync('firebase.json')) {
+		let firebase_config
+		try {
+			firebase_config = JSON.parse(readFileSync('firebase.json','utf-8'))
+		} catch (e) {
+			e.message = 'Error parsing firebase.json file: ' + e.message
+			throw e
+		}
+
+		return firebase_config
+	} 
+
+	throw new Error('No firebase.json file detected, create it or run firebase init')
 }

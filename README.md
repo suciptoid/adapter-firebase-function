@@ -23,19 +23,26 @@ adapter: firebase()
 ...
 ```
 
+### Options
+
+| options | default |
+|---------|---------|
+| minify  | false   |
+
+Add `firebase({ minify: true })` to reduce output file size
+
 ### Build
 ```
 npm run build
 ```
 
-This adapter will generate function and hosting directory under `.firebase`
 
 ### Firebase Config
-Minimal firebase config
+Minimal firebase config, auto generated if not exists
 ```
 {
   "hosting": {
-    "public": ".firebase/hosting",
+    "public": "public",
     "rewrites": [
       {
         "source": "**",
@@ -45,7 +52,7 @@ Minimal firebase config
   },
   "functions": {
     "predeploy": [],
-    "source": ".firebase/function",
+    "source": "functions",
     "runtime": "nodejs12"
   }
 }

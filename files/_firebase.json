@@ -1,0 +1,17 @@
+{
+    "hosting": {
+      "public": "public",
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "ssr"
+        }
+      ]
+    },
+    "functions": {
+      "predeploy": [],
+      "source": "functions",
+      "runtime": "nodejs12"
+    }
+  }
+  
