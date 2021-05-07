@@ -1,6 +1,5 @@
 import { getRawBody } from '@sveltejs/kit/http'; // eslint-disable-line import/no-unresolved
 import '@sveltejs/kit/install-fetch'; // eslint-disable-line import/no-unresolved
-// const functions = require('firebase-functions');
 
 // TODO hardcoding the relative location makes this brittle
 import { render } from '../output/server/app.js'; // eslint-disable-line import/no-unresolved
@@ -25,7 +24,4 @@ export const ssr = async (req, res) => {
 	return res.writeHead(404).end();
 };
 
-
-// exports.ssr = functions.https.onRequest(async (request, response) => {
-// 	return await ssr(request,response)
-// });
+export default ssr
