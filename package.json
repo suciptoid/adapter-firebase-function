@@ -1,6 +1,6 @@
 {
   "name": "adapter-firebase-function",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "type": "module",
   "description": "SvelteKit firebase-function adapter",
   "main": "index.js",
@@ -14,10 +14,9 @@
   "author": "Sucipto <sucipto@pm.me> (https://sucipto.id)",
   "license": "MIT",
   "dependencies": {
-    "@sveltejs/kit": "^1.0.0-next.100",
+    "@sveltejs/kit": "^1.0.0-next.105",
     "esbuild": "^0.11.18"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/suciptoid/adapter-firebase-function.git"
