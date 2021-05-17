@@ -1,4 +1,3 @@
-import { getRawBody } from '@sveltejs/kit/node'; // eslint-disable-line import/no-unresolved
 import '@sveltejs/kit/install-fetch'; // eslint-disable-line import/no-unresolved
 
 // TODO hardcoding the relative location makes this brittle
@@ -13,7 +12,7 @@ export const ssr = async (req, res) => {
 		headers: req.headers,
 		path: pathname,
 		query: searchParams,
-		rawBody: await getRawBody(req)
+		rawBody: req.rawBody
 	});
 
 	if (rendered) {

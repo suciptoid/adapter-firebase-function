@@ -1,6 +1,6 @@
 {
   "name": "adapter-firebase-function",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "SvelteKit firebase-function adapter",
   "main": "index.js",
